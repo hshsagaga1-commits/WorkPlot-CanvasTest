@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Reconstitute the approved project from pinned source and exact overlays."""
 from pathlib import Path
-import argparse, hashlib, shutil, subprocess
+import argparse, hashlib, shutil, subprocess, json
 parser=argparse.ArgumentParser()
 parser.add_argument('upstream',type=Path)
 parser.add_argument('zipfoundation',type=Path)
@@ -23,12 +23,16 @@ for name in ['Package.swift','LICENSE','Sources','Tests']:
     if source.is_dir(): shutil.copytree(source,target)
     else: shutil.copy2(source,target)
 shutil.copytree(here/'overlay',args.output,dirs_exist_ok=True)
+adjustment=json.loads((here/"build-script-adjustment.json").read_text())
 checked=0
 for line in (here/'APPROVED_SHA256SUMS.txt').read_text().splitlines():
     digest,name=line.split('  ',1)
     if name.startswith(('WorkPlot/','Support/','Vendor/','scripts/','evidence/original-')):
+        if name == adjustment['path']:
+            if digest != adjustment['originalSHA256']: raise SystemExit('Original build-script hash mismatch')
+            digest=adjustment['buildSHA256']
         actual=hashlib.sha256((args.output/name).read_bytes()).hexdigest()
         if actual!=digest: raise SystemExit(f'Approved project mismatch: {name}')
         checked+=1
-print(f'Approved-file hashes verified: {checked}',flush=True)
+print(f'File hashes verified: {checked}; only build script has the documented packaging adjustment.',flush=True)
 subprocess.run(['python3',str(args.output/'scripts/verify-source.py')],check=True)

@@ -29,7 +29,7 @@ test -d "$APP"
 plutil -lint "$APP/Info.plist"
 IDENTITY="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP/Info.plist")"
 [[ "$IDENTITY" == com.apple.mobile.MobileHouseArrest ]] || { echo "Unexpected identity: $IDENTITY"; exit 3; }
-xcrun lipo -verify_arch arm64 "$APP/WorkPlot"
+xcrun lipo "$APP/WorkPlot" -verify_arch arm64
 mkdir -p "$RUN/package/Payload"
 ditto "$APP" "$RUN/package/Payload/WorkPlot.app"
 (cd "$RUN/package" && /usr/bin/zip -qry "$RUN/WorkPlot-CanvasTest.ipa" Payload)
