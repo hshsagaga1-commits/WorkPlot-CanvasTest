@@ -11,7 +11,7 @@ static NSInteger gLastTouchType = -1;
 static BOOL gAssistiveTouchBlocksMouse = NO;
 static BOOL gSupportsMouseHandling = NO;
 static BOOL gPrefersPointerLocked = NO;
-static BOOL gFixEnabled = NO;
+static BOOL gFixEnabled = YES;
 
 static BOOL readBoolIvar(id obj, const char *name, BOOL fallback) {
     Ivar iv = class_getInstanceVariable([obj class], name);
@@ -74,7 +74,7 @@ static void refreshHUD(void) {
                 gPrefersPointerLocked = ((BOOL(*)(id,SEL))objc_msgSend)(cap,NSSelectorFromString(@"prefersPointerLocked"));
         }
         gStatusLabel.text = [NSString stringWithFormat:
-          @"NativeMouseFix V0.1%@\n%@\nInputCapture: %@\nsupportsMouseHandling: %@\nAssistiveTouch bloqueia mouse: %@\nprefersPointerLocked: %@\nultimo touch: %@\nhandleMouseTouch aceitou: %@",
+          @"NativeMouseFix V0.2%@\n%@\nInputCapture: %@\nsupportsMouseHandling: %@\nAssistiveTouch bloqueia mouse: %@\nprefersPointerLocked: %@\nultimo touch: %@\nhandleMouseTouch aceitou: %@",
           gFixEnabled?@" [FIX ON]":@" [DIAG]", mouseSummary(), cap?@"SIM":@"NAO",
           gSupportsMouseHandling?@"SIM":@"NAO", gAssistiveTouchBlocksMouse?@"SIM":@"NAO",
           gPrefersPointerLocked?@"SIM":@"NAO", touchTypeName(gLastTouchType),
