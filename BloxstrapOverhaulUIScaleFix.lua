@@ -151,6 +151,7 @@ local guiscale = Appearance:AddToggle({
     end
 })
 
+]==]
 
 source = string.sub(source, 1, scaleStartPos - 1)
     .. scalePatched
