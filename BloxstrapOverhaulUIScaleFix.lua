@@ -63,7 +63,7 @@ if not scaleStartPos or not scaleEndPos then
     error("GUIScaler block not found. Bloxstrap was probably updated.")
 end
 
-local scalePatched = [=[
+local scalePatched = [==[
 local funnycon
 local MIN_SCALE = tonumber(getgenv().BloxstrapMinScale) or 0.01
 MIN_SCALE = math.clamp(MIN_SCALE, 0.01, 1)
@@ -170,7 +170,7 @@ local guiscale = Appearance:AddToggle({
         end
     end
 })
-]=]
+]==]
 
 source = string.sub(source, 1, scaleStartPos - 1)
     .. scalePatched
