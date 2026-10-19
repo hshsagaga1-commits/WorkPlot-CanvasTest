@@ -65,10 +65,11 @@ end
 
 local scalePatched = [==[
 local funnycon
-local MIN_SCALE = tonumber(getgenv().BloxstrapMinScale) or 0.01
-MIN_SCALE = math.clamp(MIN_SCALE, 0.01, 1)
-
+local guisets = {}
+local MIN_SCALE = tonumber(getgenv().BloxstrapMinScale) or 0.05
+MIN_SCALE = math.clamp(MIN_SCALE, 0.05, 1)
 local SCALE_TAG = "__BloxstrapOverhaulScale"
+
 local excludedNames = {
     TouchGui = true, TouchControlFrame = true, DynamicThumbstick = true,
     ThumbstickFrame = true, JumpButton = true, BloxstrapCrosshair = true,
@@ -85,17 +86,7 @@ local function isExcluded(obj)
         or string.find(name, "jumpbutton", 1, true) ~= nil
         or string.find(name, "touchcontrol", 1, true) ~= nil
 end
-local function getScaleObject(gui)
-    if not gui or not gui:IsA("GuiObject") or isExcluded(gui) then return nil end
-    local scale = gui:FindFirstChild(SCALE_TAG)
-    if not scale then
-        scale = Instance.new("UIScale")
-        scale.Name = SCALE_TAG
-        scale.Scale = 1
-        scale.Parent = gui
-    end
-    return scale
-end
+
 local function nextScale(current)
     current = tonumber(current) or 1
     if current > 0.7501 then return 0.75 end
@@ -107,6 +98,19 @@ local function nextScale(current)
     if current > 0.0501 then return 0.05 end
     return MIN_SCALE
 end
+
+local function getScaleObject(gui)
+    if not gui or not gui:IsA("GuiObject") or isExcluded(gui) then return nil end
+    local scale = gui:FindFirstChild(SCALE_TAG)
+    if not scale then
+        scale = Instance.new("UIScale")
+        scale.Name = SCALE_TAG
+        scale.Scale = 1
+        scale.Parent = gui
+    end
+    return scale
+end
+
 local function getGameRoots()
     local roots, seen = {}, {}
     for _, screen in ipairs(lplr.PlayerGui:GetChildren()) do
@@ -121,27 +125,26 @@ local function getGameRoots()
     end
     return roots
 end
-local function applyRootScale(root, value)
-    if not root or not root.Parent or isExcluded(root) then return end
-    local scale = getScaleObject(root)
-    if not scale then return end
-    -- UIScale reduz ao redor do centro do objeto. Nao mexe em Position:
-    -- compensacoes em pixels viram offsets acumulados e empurram a UI para os cantos.
-    scale.Scale = value
-end
+
 local function applyScalePass()
     for _, root in ipairs(getGameRoots()) do
         local scale = getScaleObject(root)
-        if scale then applyRootScale(root, nextScale(scale.Scale)) end
+        if scale then
+            -- Diminui um passo por ativacao, com limite inferior; nao altera Position.
+            scale.Scale = nextScale(scale.Scale)
+        end
     end
 end
+
 local function disconnectScaler()
-    pcall(function() if funnycon then funnycon:Disconnect(); funnycon = nil end end)
+    pcall(function()
+        if funnycon then funnycon:Disconnect(); funnycon = nil end
+    end)
 end
 
 local guiscale = Appearance:AddToggle({
     Name = "GUIScaler",
-    Description = "Redimensiona a interface do jogo; ignora joystick, pulo e overlays conhecidos",
+    Description = "Diminui a interface por etapas, com limite minimo",
     Default = Bloxstrap.Config.GUIScale,
     Callback = function(call)
         Bloxstrap.UpdateConfig("GUIScale", call)
@@ -152,10 +155,9 @@ local guiscale = Appearance:AddToggle({
                 if not obj:IsA("GuiObject") or isExcluded(obj) then return end
                 task.defer(function()
                     if not obj.Parent or isExcluded(obj) then return end
-                    -- Só escala raízes de interface, evitando empilhar UIScale em cada filho.
-                    local parent = obj.Parent
-                    if parent and parent:IsA("ScreenGui") then
-                        applyRootScale(obj, 0.75)
+                    if obj.Parent:IsA("ScreenGui") then
+                        local scale = getScaleObject(obj)
+                        if scale then scale.Scale = 0.75 end
                     end
                 end)
             end)
