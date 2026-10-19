@@ -55,7 +55,7 @@ local source = game:HttpGet(
 )
 
 -- Patch 1: GUIScaler corrige o alvo: UIScale vai em GuiObjects, nao em ScreenGui.
-local scaleStartMarker = "local funnycon\\nlocal guisets = {}"
+local scaleStartMarker = "local funnycon\nlocal guisets = {}"
 local scaleEndMarker = "local touchuuval = 1.2"
 local scaleStartPos = string.find(source, scaleStartMarker, 1, true)
 local scaleEndPos = scaleStartPos and string.find(source, scaleEndMarker, scaleStartPos, true)
