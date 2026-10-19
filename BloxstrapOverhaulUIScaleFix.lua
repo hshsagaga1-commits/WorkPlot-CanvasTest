@@ -68,7 +68,6 @@ local funnycon
 local MIN_SCALE = tonumber(getgenv().BloxstrapMinScale) or 0.01
 MIN_SCALE = math.clamp(MIN_SCALE, 0.01, 1)
 
-local RunService = game:GetService("RunService")
 local SCALE_TAG = "__BloxstrapOverhaulScale"
 local excludedNames = {
     TouchGui = true, TouchControlFrame = true, DynamicThumbstick = true,
@@ -124,16 +123,11 @@ local function getGameRoots()
 end
 local function applyRootScale(root, value)
     if not root or not root.Parent or isExcluded(root) then return end
-    local before = root.AbsolutePosition
-    local oldPosition = root.Position
     local scale = getScaleObject(root)
     if not scale then return end
+    -- UIScale reduz ao redor do centro do objeto. Nao mexe em Position:
+    -- compensacoes em pixels viram offsets acumulados e empurram a UI para os cantos.
     scale.Scale = value
-    RunService.RenderStepped:Wait()
-    if not root.Parent then return end
-    local after = root.AbsolutePosition
-    root.Position = UDim2.new(oldPosition.X.Scale, oldPosition.X.Offset + before.X - after.X,
-        oldPosition.Y.Scale, oldPosition.Y.Offset + before.Y - after.Y)
 end
 local function applyScalePass()
     for _, root in ipairs(getGameRoots()) do
