@@ -68,30 +68,26 @@ local funnycon
 local MIN_SCALE = tonumber(getgenv().BloxstrapMinScale) or 0.01
 MIN_SCALE = math.clamp(MIN_SCALE, 0.01, 1)
 
+local RunService = game:GetService("RunService")
 local SCALE_TAG = "__BloxstrapOverhaulScale"
 local excludedNames = {
-    TouchGui = true,
-    BloxstrapCrosshair = true,
-    PerfectUIManager_UI = true,
-    PerfectUIManager_Shield = true,
-    Bloxstrap = true
+    TouchGui = true, TouchControlFrame = true, DynamicThumbstick = true,
+    ThumbstickFrame = true, JumpButton = true, BloxstrapCrosshair = true,
+    PerfectUIManager_UI = true, PerfectUIManager_Shield = true, Bloxstrap = true
 }
-
 local function isExcluded(obj)
     local current = obj
     while current and current ~= lplr.PlayerGui do
-        if excludedNames[current.Name] then
-            return true
-        end
+        if excludedNames[current.Name] then return true end
         current = current.Parent
     end
-    return false
+    local name = string.lower(obj.Name)
+    return string.find(name, "thumbstick", 1, true) ~= nil
+        or string.find(name, "jumpbutton", 1, true) ~= nil
+        or string.find(name, "touchcontrol", 1, true) ~= nil
 end
-
 local function getScaleObject(gui)
-    if not gui or not gui:IsA("GuiObject") or isExcluded(gui) then
-        return nil
-    end
+    if not gui or not gui:IsA("GuiObject") or isExcluded(gui) then return nil end
     local scale = gui:FindFirstChild(SCALE_TAG)
     if not scale then
         scale = Instance.new("UIScale")
@@ -101,7 +97,6 @@ local function getScaleObject(gui)
     end
     return scale
 end
-
 local function nextScale(current)
     current = tonumber(current) or 1
     if current > 0.7501 then return 0.75 end
@@ -113,7 +108,6 @@ local function nextScale(current)
     if current > 0.0501 then return 0.05 end
     return MIN_SCALE
 end
-
 local function getGameRoots()
     local roots, seen = {}, {}
     for _, screen in ipairs(lplr.PlayerGui:GetChildren()) do
@@ -128,20 +122,27 @@ local function getGameRoots()
     end
     return roots
 end
-
+local function applyRootScale(root, value)
+    if not root or not root.Parent or isExcluded(root) then return end
+    local before = root.AbsolutePosition
+    local oldPosition = root.Position
+    local scale = getScaleObject(root)
+    if not scale then return end
+    scale.Scale = value
+    RunService.RenderStepped:Wait()
+    if not root.Parent then return end
+    local after = root.AbsolutePosition
+    root.Position = UDim2.new(oldPosition.X.Scale, oldPosition.X.Offset + before.X - after.X,
+        oldPosition.Y.Scale, oldPosition.Y.Offset + before.Y - after.Y)
+end
 local function applyScalePass()
     for _, root in ipairs(getGameRoots()) do
         local scale = getScaleObject(root)
-        if scale then
-            scale.Scale = nextScale(scale.Scale)
-        end
+        if scale then applyRootScale(root, nextScale(scale.Scale)) end
     end
 end
-
 local function disconnectScaler()
-    pcall(function()
-        if funnycon then funnycon:Disconnect(); funnycon = nil end
-    end)
+    pcall(function() if funnycon then funnycon:Disconnect(); funnycon = nil end end)
 end
 
 local guiscale = Appearance:AddToggle({
@@ -160,8 +161,7 @@ local guiscale = Appearance:AddToggle({
                     -- Só escala raízes de interface, evitando empilhar UIScale em cada filho.
                     local parent = obj.Parent
                     if parent and parent:IsA("ScreenGui") then
-                        local scale = getScaleObject(obj)
-                        if scale then scale.Scale = 0.75 end
+                        applyRootScale(obj, 0.75)
                     end
                 end)
             end)
