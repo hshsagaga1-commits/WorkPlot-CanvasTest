@@ -82,38 +82,47 @@ local function isExcluded(obj)
         or string.find(name, "jumpbutton", 1, true) ~= nil
         or string.find(name, "touchcontrol", 1, true) ~= nil
 end
+
+-- Target clickable controls themselves, not their full-screen/container parents.
+-- UIScale then shrinks each button around its own center instead of pulling an
+-- entire layout toward a ScreenGui corner.
 local function getTargets()
     local targets, seen = {}, {}
-    for _, screen in ipairs(lplr.PlayerGui:GetChildren()) do
-        if screen:IsA("ScreenGui") and not excludedNames[screen.Name] then
-            for _, obj in ipairs(screen:GetChildren()) do
-                if obj:IsA("GuiObject") and not isExcluded(obj) and not seen[obj] then
-                    seen[obj] = true
-                    table.insert(targets, obj)
-                end
-            end
+    for _, obj in ipairs(lplr.PlayerGui:GetDescendants()) do
+        if (obj:IsA("ImageButton") or obj:IsA("TextButton"))
+            and not isExcluded(obj) and not seen[obj] then
+            seen[obj] = true
+            table.insert(targets, obj)
         end
     end
     return targets
 end
+
 local function scaleTarget(obj)
+    if not obj or not obj.Parent or isExcluded(obj) then return end
+    for _, entry in ipairs(guisets) do
+        if entry.target == obj then return end
+    end
     local oldui = obj:FindFirstChildWhichIsA("UIScale")
     if oldui then
-        table.insert(guisets, {oldscale = oldui.Scale, scaler = oldui})
-        oldui.Scale = math.max(0.05, oldui.Scale * 0.5)
+        table.insert(guisets, {target = obj, oldscale = oldui.Scale, scaler = oldui})
+        oldui.Scale = math.min(oldui.Scale, 0.7)
     else
         local uiscale = Instance.new("UIScale")
+        uiscale.Name = "__BloxstrapButtonScale"
         uiscale.Scale = 0.7
         uiscale.Parent = obj
-        table.insert(guisets, {oldscale = 9e9, scaler = uiscale})
+        table.insert(guisets, {target = obj, oldscale = 9e9, scaler = uiscale})
     end
 end
+
 local function applyToCurrentTargets()
     for _, obj in ipairs(getTargets()) do scaleTarget(obj) end
 end
+
 local guiscale = Appearance:AddToggle({
     Name = "GUIScaler",
-    Description = "Decrease the roblox gui scales",
+    Description = "Decrease button scales without moving their centers",
     Default = Bloxstrap.Config.GUIScale,
     Callback = function(call)
         Bloxstrap.UpdateConfig("GUIScale", call)
@@ -122,11 +131,11 @@ local guiscale = Appearance:AddToggle({
             table.clear(guisets)
             applyToCurrentTargets()
             funnycon = lplr.PlayerGui.DescendantAdded:Connect(function(obj)
-                if not obj:IsA("GuiObject") or isExcluded(obj) then return end
-                task.defer(function()
-                    if not obj.Parent or isExcluded(obj) then return end
-                    if obj.Parent:IsA("ScreenGui") then scaleTarget(obj) end
-                end)
+                if (obj:IsA("ImageButton") or obj:IsA("TextButton")) and not isExcluded(obj) then
+                    task.defer(function()
+                        if obj.Parent and not isExcluded(obj) then scaleTarget(obj) end
+                    end)
+                end
             end)
         else
             pcall(function() if funnycon then funnycon:Disconnect(); funnycon = nil end end)
@@ -141,7 +150,7 @@ local guiscale = Appearance:AddToggle({
         end
     end
 })
-]==]
+
 
 source = string.sub(source, 1, scaleStartPos - 1)
     .. scalePatched
