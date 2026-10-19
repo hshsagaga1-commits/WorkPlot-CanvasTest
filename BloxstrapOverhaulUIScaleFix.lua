@@ -66,10 +66,6 @@ end
 local scalePatched = [==[
 local funnycon
 local guisets = {}
-local MIN_SCALE = tonumber(getgenv().BloxstrapMinScale) or 0.05
-MIN_SCALE = math.clamp(MIN_SCALE, 0.05, 1)
-local SCALE_TAG = "__BloxstrapOverhaulScale"
-
 local excludedNames = {
     TouchGui = true, TouchControlFrame = true, DynamicThumbstick = true,
     ThumbstickFrame = true, JumpButton = true, BloxstrapCrosshair = true,
@@ -86,83 +82,62 @@ local function isExcluded(obj)
         or string.find(name, "jumpbutton", 1, true) ~= nil
         or string.find(name, "touchcontrol", 1, true) ~= nil
 end
-
-local function nextScale(current)
-    current = tonumber(current) or 1
-    if current > 0.7501 then return 0.75 end
-    if current > 0.5001 then return 0.50 end
-    if current > 0.4001 then return 0.40 end
-    if current > 0.3001 then return 0.30 end
-    if current > 0.2001 then return 0.20 end
-    if current > 0.1001 then return 0.10 end
-    if current > 0.0501 then return 0.05 end
-    return MIN_SCALE
-end
-
-local function getScaleObject(gui)
-    if not gui or not gui:IsA("GuiObject") or isExcluded(gui) then return nil end
-    local scale = gui:FindFirstChild(SCALE_TAG)
-    if not scale then
-        scale = Instance.new("UIScale")
-        scale.Name = SCALE_TAG
-        scale.Scale = 1
-        scale.Parent = gui
-    end
-    return scale
-end
-
-local function getGameRoots()
-    local roots, seen = {}, {}
+local function getTargets()
+    local targets, seen = {}, {}
     for _, screen in ipairs(lplr.PlayerGui:GetChildren()) do
         if screen:IsA("ScreenGui") and not excludedNames[screen.Name] then
-            for _, child in ipairs(screen:GetChildren()) do
-                if child:IsA("GuiObject") and not isExcluded(child) and not seen[child] then
-                    seen[child] = true
-                    table.insert(roots, child)
+            for _, obj in ipairs(screen:GetChildren()) do
+                if obj:IsA("GuiObject") and not isExcluded(obj) and not seen[obj] then
+                    seen[obj] = true
+                    table.insert(targets, obj)
                 end
             end
         end
     end
-    return roots
+    return targets
 end
-
-local function applyScalePass()
-    for _, root in ipairs(getGameRoots()) do
-        local scale = getScaleObject(root)
-        if scale then
-            -- Diminui um passo por ativacao, com limite inferior; nao altera Position.
-            scale.Scale = nextScale(scale.Scale)
-        end
+local function scaleTarget(obj)
+    local oldui = obj:FindFirstChildWhichIsA("UIScale")
+    if oldui then
+        table.insert(guisets, {oldscale = oldui.Scale, scaler = oldui})
+        oldui.Scale = math.max(0.05, oldui.Scale * 0.5)
+    else
+        local uiscale = Instance.new("UIScale")
+        uiscale.Scale = 0.7
+        uiscale.Parent = obj
+        table.insert(guisets, {oldscale = 9e9, scaler = uiscale})
     end
 end
-
-local function disconnectScaler()
-    pcall(function()
-        if funnycon then funnycon:Disconnect(); funnycon = nil end
-    end)
+local function applyToCurrentTargets()
+    for _, obj in ipairs(getTargets()) do scaleTarget(obj) end
 end
-
 local guiscale = Appearance:AddToggle({
     Name = "GUIScaler",
-    Description = "Diminui a interface por etapas, com limite minimo",
+    Description = "Decrease the roblox gui scales",
     Default = Bloxstrap.Config.GUIScale,
     Callback = function(call)
         Bloxstrap.UpdateConfig("GUIScale", call)
         if call then
-            disconnectScaler()
-            applyScalePass()
+            if funnycon then pcall(function() funnycon:Disconnect() end) end
+            table.clear(guisets)
+            applyToCurrentTargets()
             funnycon = lplr.PlayerGui.DescendantAdded:Connect(function(obj)
                 if not obj:IsA("GuiObject") or isExcluded(obj) then return end
                 task.defer(function()
                     if not obj.Parent or isExcluded(obj) then return end
-                    if obj.Parent:IsA("ScreenGui") then
-                        local scale = getScaleObject(obj)
-                        if scale then scale.Scale = 0.75 end
-                    end
+                    if obj.Parent:IsA("ScreenGui") then scaleTarget(obj) end
                 end)
             end)
         else
-            disconnectScaler()
+            pcall(function() if funnycon then funnycon:Disconnect(); funnycon = nil end end)
+            for _, v in ipairs(guisets) do
+                if v.oldscale == 9e9 then
+                    if v.scaler and v.scaler.Parent then v.scaler:Destroy() end
+                elseif v.scaler and v.scaler.Parent then
+                    v.scaler.Scale = v.oldscale
+                end
+            end
+            table.clear(guisets)
         end
     end
 })
