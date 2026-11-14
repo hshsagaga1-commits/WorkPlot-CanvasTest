@@ -1,0 +1,37 @@
+{
+  "schema": 2,
+  "sourceCommit": "synthetic-fixture",
+  "geometry": {
+    "machine": "iPhone12,1",
+    "build": "Fixture-A",
+    "timestamp": "2026-01-01T10:00:00.123Z",
+    "bounds": {"width": 414, "height": 896},
+    "nativeBounds": {"width": 828, "height": 1792},
+    "fixedCoordinateSpace": {"width": 414, "height": 896},
+    "currentMode": {"width": 828, "height": 1792},
+    "availableModes": [{"width": 828, "height": 1792}],
+    "scale": 2,
+    "nativeScale": 2
+  },
+  "mobileGestalt": {
+    "readSuccess": true,
+    "fullFileBytes": 1024,
+    "fullFileSHA256": "synthetic-fixture",
+    "MainScreenCanvasSizes": {
+      "bytes": 16,
+      "hexPrefix": "0000000000949140000000000008a340",
+      "present": true,
+      "type": "data"
+    }
+  },
+  "preferenceObservations": [
+    {
+      "domain": "com.apple.iokit.IOMobileGraphicsFamily",
+      "canvas_width": {"present": true, "value": "828"},
+      "canvas_height": {"present": true, "value": "1792"}
+    }
+  ],
+  "privateFieldForTest": "should not be copied into exported report",
+  "protectedWritesPerformed": false,
+  "writeAttempt": {"performed": false}
+}
