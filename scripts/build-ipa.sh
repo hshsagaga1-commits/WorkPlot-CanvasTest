@@ -36,9 +36,11 @@ xcodebuild -project ResolutionLab.xcodeproj \
     clean build
 
 app="$work/DerivedData/Build/Products/Release-iphoneos/ResolutionLab.app"
-xcrun lipo -verify_arch arm64 "$app/ResolutionLab"
+architecture="$(xcrun lipo -archs "$app/ResolutionLab")"
+printf 'Arquitetura %s\n' "$architecture"
+test "$architecture" = arm64
 xcrun vtool -show-build "$app/ResolutionLab" | tee "$out/macho.txt"
-grep -qE 'platform[[:space:]]+IOS$' "$out/macho.txt"
+grep -qE 'platform[[:space:]]+IOS[[:space:]]*$' "$out/macho.txt"
 /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$app/Info.plist"
 /usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$app/Info.plist"
 /usr/libexec/PlistBuddy -c 'Print :RLSourceCommit' "$app/Info.plist"
