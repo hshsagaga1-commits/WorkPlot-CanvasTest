@@ -1,0 +1,6 @@
+{
+  "path": "scripts/build-unsigned.sh",
+  "originalSHA256": "d1ce770dfa167052bcf1ec6d6d099ef90838e1329c814daf80a98374a7ec464c",
+  "buildSHA256": "e8c4c8ea5156c14f3f96d40daccd075f37101c6e922f3dba9f0ba7a452fcd095",
+  "reason": "Archive succeeded in run 34151207596. Fix lipo argument order during packaging only; application source unchanged."
+}

@@ -1,0 +1,8 @@
+{
+  "artifact_id": 9490042558,
+  "run_id": 32627270923,
+  "commit": "9756071f3cfa7a8902dbf1a4ee81beebc1210d0a",
+  "ipa_sha256": "8bf8401a184a0d329cbd7b9d06683619cd64b5832d47d3395420e53fc7718b41",
+  "ipa_byte_equal": true,
+  "different_entries": []
+}

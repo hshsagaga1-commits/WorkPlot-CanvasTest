@@ -1,0 +1,49 @@
+name: WorkPlot Canvas Diagnostic
+on:
+  push:
+    branches: [workplot-canvas-diagnostic]
+    paths: ['diagnostic/**', '.github/workflows/canvas-diagnostic.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get the source proven to produce WorkPlot(3)
+        uses: actions/checkout@v4
+        with:
+          repository: gievano/WorkPlot
+          ref: 9756071f3cfa7a8902dbf1a4ee81beebc1210d0a
+          path: upstream
+      - name: Get the original ZIPFoundation dependency
+        uses: actions/checkout@v4
+        with:
+          repository: weichsel/ZIPFoundation
+          ref: 22787ffb59de99e5dc1fbfe80b19c97a904ad48d
+          path: zipfoundation
+      - name: Prepare the approved diagnostic and verify source hashes
+        run: python3 diagnostic/prepare-runner.py upstream zipfoundation build-project
+      - name: Build unsigned IPA
+        shell: bash
+        run: |
+          set -o pipefail
+          bash build-project/scripts/build-unsigned.sh 2>&1 | tee build.log
+      - name: Upload IPA, SHA256 and dSYMs
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorkPlot-CanvasTest
+          path: build-project/dist/*
+          if-no-files-found: error
+      - name: Upload build logs and test instructions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: WorkPlot-CanvasTest-logs
+          path: |
+            build.log
+            build-project/build/run.*/build.log
+            diagnostic/overlay/TEST_INSTRUCTIONS.md
+          if-no-files-found: warn

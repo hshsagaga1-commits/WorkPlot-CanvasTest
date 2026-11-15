@@ -1,0 +1,20 @@
+{
+  "sourceCommit": "9756071f3cfa7a8902dbf1a4ee81beebc1210d0a",
+  "protectedFiles": {
+    "WorkPlot/Exploit/BadQueryBridge.h": "8af3b2ee72c54dcced2bb0590559689fe5504e7d1111d44bff0ed4624b6471ce",
+    "WorkPlot/Exploit/BadQueryBridge.m": "181111b0a31f4e536ba6211ac38f7c24ba83cd2e72af46c7d39806364508d127",
+    "WorkPlot/Exploit/CmgBridge.h": "353e089e9d59f3c36757ee7703e37154a3449bbaf27e01af516f8e291bb07f28",
+    "WorkPlot/Exploit/CmgBridge.m": "91f0c508382dcc5e2490d0926ad7dc6a028b964abb2ef8c05e97d2cd3256ed53",
+    "WorkPlot/Exploit/GestaltAccess.h": "2ad29fc266f74509ec8c314522b3c985f96abf08af9b4094a0adeee4a076658f",
+    "WorkPlot/Exploit/GestaltAccess.m": "f4d62b63ca36af0c563c0ce594c25fc710329be5342941262daf7412d7bcef9e",
+    "WorkPlot/Exploit/WorkPlot-Bridging-Header.h": "a4a04cc85966947052e376b54c73b10994bc0168c8f851dcb0abe3d8e90e10ca",
+    "WorkPlot/Exploit/bad_query.c": "8f8573619d88d063d69d687c66824497de858d008cf47b82ee8ff54e890f7e3d",
+    "WorkPlot/Exploit/bad_query.h": "60a4f53a3de3103a9e60c38d147c35808bc002ff0d49b5c4316f6a5093821c2c",
+    "WorkPlot/Managers/ExploitManager.swift": "43a8d5dc31923de1b7f893b0a62c3f2ac4d1589a1fe6d3a22b9dab44c94ae3d1",
+    "WorkPlot/Managers/BadQueryLeaseScope.swift": "8323de8e8cf4e01b46708411242809dbd3b8aabf87990821876fbd66731440e3",
+    "WorkPlot/WorkPlot.xcodeproj/project.pbxproj": "bf19ee88bfe8e9a4cfe2fc9ae5e39101600d2a4c31fcd12456683859d97488ae",
+    "Support/Info.plist": "cbd19181150d757dce2109141ef95be775ae108c12a511b2eea30e35293dfd2b",
+    "WorkPlot/App/WorkPlotApp.swift": "4c369794e9a09f6c45dfb9efe5bc2de4acf62648105100799597d379a954e443"
+  },
+  "projectException": "project.pbxproj differs only in ZIPFoundation dependency source; see supplied diff. Bundle identifier unchanged."
+}
