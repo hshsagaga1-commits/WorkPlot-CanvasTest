@@ -1,0 +1,36 @@
+name: Build ResolutionLab Observer
+on:
+  push:
+    branches: [resolutionlab-phase-4]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observer:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Test offline experiment tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/observer-output
+          python3 -B -m unittest discover -s Tests/Phase3Evidence -p 'test_*.py' -v 2>&1 | tee build/observer-output/python-tests.log
+      - name: Test native getter reader
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcrun --sdk macosx clang -fobjc-arc -fmodules -Wall -Wextra -Werror -Iexperimental/Observer -framework Foundation -framework CoreGraphics -framework QuartzCore experimental/Observer/ObserverNative.m Tests/ObserverNative/main.m -o build/observer-native-tests
+          build/observer-native-tests | tee build/observer-output/native-tests.log
+      - name: Build iPhoneOS observer
+        run: bash scripts/build-observer.sh build/observer-output
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ResolutionLab-Observer-v0.2.0
+          path: build/observer-output/
+          if-no-files-found: error
+          retention-days: 14
