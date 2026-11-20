@@ -1,0 +1,2112 @@
+{
+  "schema": 1,
+  "observedOn": "2026-11-20",
+  "target": {
+    "machine": "iPhone12,1",
+    "build": "24A5380h",
+    "os": "27.0"
+  },
+  "scope": "Estudo estático e medições históricas. Arestas comprovadas mantêm o escopo da sua evidência.",
+  "nodes": [
+    {
+      "id": "app",
+      "type": "app",
+      "label": "ResolutionLab / app assinado"
+    },
+    {
+      "id": "mg",
+      "type": "cache",
+      "label": "Cache MobileGestalt"
+    },
+    {
+      "id": "graphics",
+      "type": "file",
+      "label": "Destino gráfico candidato"
+    },
+    {
+      "id": "cfprefs",
+      "type": "API",
+      "label": "Preferências vistas pelo processo"
+    },
+    {
+      "id": "rescale",
+      "type": "tool",
+      "label": "Re:Scale 2"
+    },
+    {
+      "id": "rescale_pref",
+      "type": "domain",
+      "label": "tf.festival.rescale"
+    },
+    {
+      "id": "daemon",
+      "type": "process",
+      "label": "Consumidor backboardd / aggregated histórico"
+    },
+    {
+      "id": "global",
+      "type": "effect",
+      "label": "Canvas lógico global do iPhone"
+    },
+    {
+      "id": "bad",
+      "type": "entry",
+      "label": "bad_query"
+    },
+    {
+      "id": "worse",
+      "type": "entry",
+      "label": "worse_query"
+    },
+    {
+      "id": "erosion",
+      "type": "tool",
+      "label": "Erosion"
+    },
+    {
+      "id": "worst",
+      "type": "tool",
+      "label": "WorstGestalt"
+    },
+    {
+      "id": "mond",
+      "type": "tool",
+      "label": "mond"
+    },
+    {
+      "id": "displayzoom",
+      "type": "user_control",
+      "label": "Zoom da Tela da Apple"
+    },
+    {
+      "id": "accesszoom",
+      "type": "user_control",
+      "label": "Zoom de Acessibilidade"
+    },
+    {
+      "id": "mdm",
+      "type": "channel",
+      "label": "MDM Settings"
+    },
+    {
+      "id": "ddm",
+      "type": "channel",
+      "label": "Configuração declarativa"
+    },
+    {
+      "id": "shortcut",
+      "type": "channel",
+      "label": "Atalhos"
+    },
+    {
+      "id": "backup",
+      "type": "channel",
+      "label": "Backup suportado"
+    },
+    {
+      "id": "sparse",
+      "type": "tool",
+      "label": "Nugget partial restore"
+    },
+    {
+      "id": "restore27",
+      "type": "tool",
+      "label": "GoldenNugget restore experimental"
+    },
+    {
+      "id": "external",
+      "type": "display",
+      "label": "Tela externa"
+    },
+    {
+      "id": "scene",
+      "type": "scene",
+      "label": "Cena de um app / Mirroring"
+    },
+    {
+      "id": "layer",
+      "type": "surface",
+      "label": "Buffer da camada do app"
+    },
+    {
+      "id": "logs",
+      "type": "observation",
+      "label": "Logs do sistema exportados"
+    },
+    {
+      "id": "simulator",
+      "type": "environment",
+      "label": "Simulador macOS"
+    },
+    {
+      "id": "firmware",
+      "type": "observation",
+      "label": "Binários da build exata"
+    },
+    {
+      "id": "reload",
+      "type": "lifecycle",
+      "label": "Reinicialização / reload"
+    },
+    {
+      "id": "framebuffer",
+      "type": "API",
+      "label": "Interface privada de framebuffer"
+    },
+    {
+      "id": "evidence",
+      "type": "observation",
+      "label": "Medição de imagem e geometria"
+    }
+  ],
+  "capabilities": {
+    "app_sideload": "available",
+    "own_files": "available",
+    "public_screen_read": "available",
+    "daemon_injection": "unavailable",
+    "unrestricted_file_write": "unavailable",
+    "valid_group": "unknown",
+    "graphics_extension": "unknown",
+    "graphics_consumer_27": "unknown",
+    "global_apply_proven": "unknown",
+    "rollback_without_ui": "unknown",
+    "operator_settings": "available",
+    "custom_preset": "unavailable",
+    "managed_device": "unavailable",
+    "mdm_canvas_key": "unknown",
+    "backup_canvas_mapping": "unknown",
+    "host_pairing": "unavailable",
+    "partial_restore_27": "unavailable",
+    "experimental_restore_27": "unknown",
+    "private_fb_authorization": "unknown",
+    "system_logs_supplied": "unavailable",
+    "exact_system_binaries": "unavailable",
+    "safe_reload": "unknown",
+    "global_projection": "unknown"
+  },
+  "edges": [
+    {
+      "id": "R01E1",
+      "source": "rescale",
+      "target": "rescale_pref",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "S02"
+      ],
+      "prerequisites": [
+        "own_files"
+      ],
+      "meaning": "O tweak procura dimensões no próprio domínio.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "own_files"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R01E2",
+      "source": "rescale_pref",
+      "target": "daemon",
+      "type": "propaga",
+      "state": "COMPROVADA",
+      "evidence": [
+        "S02"
+      ],
+      "prerequisites": [
+        "daemon_injection"
+      ],
+      "meaning": "O hook substitui a resposta de CFPreferences dentro do processo selecionado.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "daemon_injection"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R01E3",
+      "source": "daemon",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S02"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "A implementação de 2022 requer validação no consumidor desta beta.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R02E1",
+      "source": "app",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "BLOQUEADA",
+      "evidence": [
+        "H03",
+        "S13"
+      ],
+      "prerequisites": [
+        "unrestricted_file_write"
+      ],
+      "meaning": "O caminho gráfico teve rejeição na consulta histórica.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "unrestricted_file_write"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R02E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O leitor efetivo da build ainda precisa ser identificado.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R03E1",
+      "source": "app",
+      "target": "mg",
+      "type": "consulta",
+      "state": "SUPORTADA INDIRETAMENTE",
+      "evidence": [
+        "H03",
+        "S13",
+        "S28"
+      ],
+      "prerequisites": [
+        "app_sideload"
+      ],
+      "meaning": "O relatório antigo leu 16 bytes que representam 1125 x 2436.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "app_sideload"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R03E2",
+      "source": "mg",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "H01",
+        "H02",
+        "H03"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "A coexistência com UIKit 828 x 1792 deixa a causalidade em aberto.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R04E1",
+      "source": "worse",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S08"
+      ],
+      "prerequisites": [
+        "valid_group",
+        "graphics_extension"
+      ],
+      "meaning": "É preciso demonstrar concessão e open efetivo para este recurso.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "valid_group",
+        "graphics_extension"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R04E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O consumidor e a recuperação continuam necessários.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R05E1",
+      "source": "erosion",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S08",
+        "S11"
+      ],
+      "prerequisites": [
+        "valid_group",
+        "graphics_extension"
+      ],
+      "meaning": "É preciso demonstrar concessão e open efetivo para este recurso.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "valid_group",
+        "graphics_extension"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R05E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O consumidor e a recuperação continuam necessários.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R06E1",
+      "source": "worst",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S08",
+        "S24"
+      ],
+      "prerequisites": [
+        "valid_group",
+        "graphics_extension"
+      ],
+      "meaning": "É preciso demonstrar concessão e open efetivo para este recurso.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "valid_group",
+        "graphics_extension"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R06E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O consumidor e a recuperação continuam necessários.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R07E1",
+      "source": "app",
+      "target": "cfprefs",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "H03",
+        "D05"
+      ],
+      "prerequisites": [
+        "app_sideload"
+      ],
+      "meaning": "O diagnóstico histórico consultou o domínio e recebeu 828 x 1792.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "app_sideload"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R07E2",
+      "source": "cfprefs",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D05",
+        "S02"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "meaning": "A visão do processo e a origem consumida pelo daemon precisam ser correlacionadas.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R08E1",
+      "source": "app",
+      "target": "worse",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D06",
+        "D07",
+        "S08"
+      ],
+      "prerequisites": [
+        "valid_group"
+      ],
+      "meaning": "Assinatura válida e grupo efetivamente concedido precisam de confirmação instalada.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "valid_group"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R08E2",
+      "source": "worse",
+      "target": "graphics",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S08"
+      ],
+      "prerequisites": [
+        "graphics_extension"
+      ],
+      "meaning": "A extensão deve cobrir exatamente o alvo.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_extension"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R08E3",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O efeito gráfico precisa sobreviver à validação independente.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R09E1",
+      "source": "app",
+      "target": "displayzoom",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "D01"
+      ],
+      "prerequisites": [
+        "operator_settings"
+      ],
+      "meaning": "O operador pode escolher os presets publicados nos Ajustes.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "operator_settings"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R09E2",
+      "source": "displayzoom",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D01",
+        "H01",
+        "H02"
+      ],
+      "prerequisites": [
+        "global_apply_proven"
+      ],
+      "meaning": "O efeito global e a geometria precisam ser medidos no aparelho com um preset distinto.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "global_apply_proven"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R10E1",
+      "source": "app",
+      "target": "accesszoom",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "D08"
+      ],
+      "prerequisites": [
+        "operator_settings"
+      ],
+      "meaning": "Há ampliação de toda a tela ou de uma região.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "operator_settings"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R10E2",
+      "source": "accesszoom",
+      "target": "global",
+      "type": "propaga",
+      "state": "CONTRADITA",
+      "evidence": [
+        "D08"
+      ],
+      "prerequisites": [],
+      "meaning": "A documentação descreve ampliação visual. Dimensões arbitrárias do canvas global continuam sem evidência.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R11E1",
+      "source": "mdm",
+      "target": "accesszoom",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "S37"
+      ],
+      "prerequisites": [
+        "managed_device"
+      ],
+      "meaning": "ZoomEnabled é uma opção booleana de acessibilidade com supervisão no iOS.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "managed_device"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R11E2",
+      "source": "accesszoom",
+      "target": "global",
+      "type": "propaga",
+      "state": "CONTRADITA",
+      "evidence": [
+        "S37",
+        "D08"
+      ],
+      "prerequisites": [],
+      "meaning": "Esse campo tem semântica de Zoom de Acessibilidade.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R12E1",
+      "source": "ddm",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "BLOQUEADA",
+      "evidence": [
+        "S38",
+        "S39"
+      ],
+      "prerequisites": [
+        "managed_device",
+        "mdm_canvas_key"
+      ],
+      "meaning": "O esquema Accessibility 27 examinado só expõe Live Recognition. Services Configuration Files é macOS.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "managed_device",
+        "mdm_canvas_key"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R12E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "meaning": "Nenhum elo com o recurso gráfico foi demonstrado.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R13E1",
+      "source": "backup",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D09"
+      ],
+      "prerequisites": [
+        "backup_canvas_mapping"
+      ],
+      "meaning": "Backups documentam ajustes gerais. O mapeamento deste recurso permanece indeterminado.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "backup_canvas_mapping"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R13E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O consumo de um campo restaurado precisaria ser demonstrado.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R14E1",
+      "source": "sparse",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "BLOQUEADA",
+      "evidence": [
+        "S18",
+        "S30"
+      ],
+      "prerequisites": [
+        "host_pairing",
+        "partial_restore_27"
+      ],
+      "meaning": "Nugget alerta para perda de dados no iOS 27; o FixRDAR usa um transporte histórico diferente.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "host_pairing",
+        "partial_restore_27"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R14E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "Um plist com dimensões não prova a adoção por esta beta.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R15E1",
+      "source": "restore27",
+      "target": "graphics",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S35",
+        "S34"
+      ],
+      "prerequisites": [
+        "host_pairing",
+        "experimental_restore_27"
+      ],
+      "meaning": "O fork mapeia ManagedPreferencesDomain e documenta restauração com backup de proteção.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "host_pairing",
+        "experimental_restore_27"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R15E2",
+      "source": "graphics",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S35"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "O consumidor gráfico e recuperação na build exata continuam sem teste.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R16E1",
+      "source": "shortcut",
+      "target": "accesszoom",
+      "type": "consulta",
+      "state": "SUPORTADA INDIRETAMENTE",
+      "evidence": [
+        "D11",
+        "D08"
+      ],
+      "prerequisites": [
+        "operator_settings"
+      ],
+      "meaning": "A automação depende de ações disponibilizadas pelo sistema. A ação de Zoom tem indicação pública de acessibilidade.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "operator_settings"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R16E2",
+      "source": "accesszoom",
+      "target": "global",
+      "type": "propaga",
+      "state": "CONTRADITA",
+      "evidence": [
+        "D08"
+      ],
+      "prerequisites": [],
+      "meaning": "Automatizar a ampliação mantém a semântica do recurso controlado.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R17E1",
+      "source": "app",
+      "target": "external",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "D03"
+      ],
+      "prerequisites": [
+        "app_sideload"
+      ],
+      "meaning": "UIKit documenta cenas para conteúdo em um display conectado.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "app_sideload"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R17E2",
+      "source": "external",
+      "target": "global",
+      "type": "propaga",
+      "state": "CONTRADITA",
+      "evidence": [
+        "D03"
+      ],
+      "prerequisites": [],
+      "meaning": "O controle da tela externa não demonstra alteração do canvas do display interno.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R18E1",
+      "source": "app",
+      "target": "scene",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "D03",
+        "D13"
+      ],
+      "prerequisites": [
+        "app_sideload"
+      ],
+      "meaning": "A documentação descreve tamanho de cena em ambientes redimensionáveis.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "app_sideload"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R18E2",
+      "source": "scene",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D13"
+      ],
+      "prerequisites": [
+        "host_pairing",
+        "global_projection"
+      ],
+      "meaning": "A projeção desse tamanho à Home e a outros apps do display interno precisa de prova.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "host_pairing",
+        "global_projection"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R19E1",
+      "source": "app",
+      "target": "layer",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "D04"
+      ],
+      "prerequisites": [
+        "app_sideload"
+      ],
+      "meaning": "drawableSize define as texturas da camada do aplicativo.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "app_sideload"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R19E2",
+      "source": "layer",
+      "target": "global",
+      "type": "propaga",
+      "state": "CONTRADITA",
+      "evidence": [
+        "D04"
+      ],
+      "prerequisites": [],
+      "meaning": "Dimensão da textura do app tem escopo local na API documentada.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R20E1",
+      "source": "firmware",
+      "target": "daemon",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S02",
+        "S13"
+      ],
+      "prerequisites": [
+        "exact_system_binaries"
+      ],
+      "meaning": "As fontes históricas apontam um leitor que precisa ser localizado no binário desta build.",
+      "versionScope": "PLAUSÍVEL MAS NÃO TESTADO",
+      "privileges": [
+        "exact_system_binaries"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R20E2",
+      "source": "daemon",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S02"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "meaning": "É preciso estabelecer a cadeia até o efeito global.",
+      "versionScope": "PLAUSÍVEL MAS NÃO TESTADO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R21E1",
+      "source": "app",
+      "target": "framebuffer",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S02",
+        "D14"
+      ],
+      "prerequisites": [
+        "private_fb_authorization"
+      ],
+      "meaning": "A existência de uma função privada não demonstra conexão autorizada pelo sandbox.",
+      "versionScope": "PLAUSÍVEL MAS NÃO TESTADO",
+      "privileges": [
+        "private_fb_authorization"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R21E2",
+      "source": "framebuffer",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "S02"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "meaning": "É preciso comprovar o seletor, sua autorização e semântica nesta beta.",
+      "versionScope": "PLAUSÍVEL MAS NÃO TESTADO",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven",
+        "rollback_without_ui"
+      ],
+      "risk": "high",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R22E1",
+      "source": "app",
+      "target": "logs",
+      "type": "consulta",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D14"
+      ],
+      "prerequisites": [
+        "system_logs_supplied"
+      ],
+      "meaning": "O operador poderia fornecer logs pertinentes obtidos por recursos do sistema.",
+      "versionScope": "PLAUSÍVEL MAS NÃO TESTADO",
+      "privileges": [
+        "system_logs_supplied"
+      ],
+      "risk": "low",
+      "recovery": "Operação de leitura local.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R22E2",
+      "source": "logs",
+      "target": "evidence",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "H03"
+      ],
+      "prerequisites": [
+        "system_logs_supplied"
+      ],
+      "meaning": "Procurar falha, consumidor e origem da preferência sem modificar o valor.",
+      "versionScope": "PLAUSÍVEL MAS NÃO TESTADO",
+      "privileges": [
+        "system_logs_supplied"
+      ],
+      "risk": "low",
+      "recovery": "Operação de leitura local.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R23E1",
+      "source": "app",
+      "target": "reload",
+      "type": "consulta",
+      "state": "SUPORTADA INDIRETAMENTE",
+      "evidence": [
+        "H02"
+      ],
+      "prerequisites": [
+        "safe_reload"
+      ],
+      "meaning": "O reboot do par de novembro foi informado pelo operador.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "safe_reload"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R23E2",
+      "source": "reload",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "H01",
+        "H02",
+        "S13"
+      ],
+      "prerequisites": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "meaning": "O modo medido ficou igual e a fonte gráfica ativa continua indeterminada.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "graphics_consumer_27",
+        "global_apply_proven"
+      ],
+      "risk": "medium",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R24E1",
+      "source": "simulator",
+      "target": "scene",
+      "type": "consulta",
+      "state": "SUPORTADA INDIRETAMENTE",
+      "evidence": [
+        "D03"
+      ],
+      "prerequisites": [],
+      "meaning": "Um laboratório pode validar código e formato de cena.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R24E2",
+      "source": "scene",
+      "target": "global",
+      "type": "propaga",
+      "state": "NÃO VALIDADA",
+      "evidence": [
+        "D03",
+        "D14"
+      ],
+      "prerequisites": [
+        "global_projection"
+      ],
+      "meaning": "Sandbox, drivers e composição do aparelho requerem verificação no hardware.",
+      "versionScope": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "privileges": [
+        "global_projection"
+      ],
+      "risk": "low",
+      "recovery": "Rollback do canvas protegido segue pendente.",
+      "confidence": "bounded",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    },
+    {
+      "id": "R25E1",
+      "source": "app",
+      "target": "evidence",
+      "type": "consulta",
+      "state": "COMPROVADA",
+      "evidence": [
+        "T01",
+        "H01",
+        "H02",
+        "D12"
+      ],
+      "prerequisites": [
+        "own_files",
+        "public_screen_read"
+      ],
+      "meaning": "O comparador mede JSONs e cabeçalhos PNG com CRC e SHA-256. A proveniência de tela é informada pelo operador.",
+      "versionScope": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "privileges": [
+        "own_files",
+        "public_screen_read"
+      ],
+      "risk": "low",
+      "recovery": "Operação de leitura local.",
+      "confidence": "high",
+      "testCondition": "Obter evidência específica da build e do efeito descrito.",
+      "invalidatedBy": "Observação reproduzível que contradiga o efeito ou a autorização descrita."
+    }
+  ],
+  "routes": [
+    {
+      "id": "R01",
+      "family": "runtime_injection",
+      "title": "Preferência Re:Scale 2 no daemon",
+      "mechanism": "injection",
+      "target": "global",
+      "nodes": [
+        "rescale",
+        "rescale_pref",
+        "daemon",
+        "global"
+      ],
+      "edges": [
+        "R01E1",
+        "R01E2",
+        "R01E3"
+      ],
+      "risk": "high",
+      "result": "Hook histórico identificado.",
+      "failureCause": "Injeção em processo protegido está fora das capacidades demonstradas.",
+      "nextPivot": "R02/R09: entrada de dados suportada pelo serviço.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R02",
+      "family": "file_configuration",
+      "title": "Plist gráfico persistente",
+      "mechanism": "protected_file",
+      "target": "global",
+      "nodes": [
+        "app",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R02E1",
+        "R02E2"
+      ],
+      "risk": "high",
+      "result": "Zero concessões nos seis candidatos históricos.",
+      "failureCause": "Rejeição na etapa query. O motivo interno exato do ContainerManager permanece desconhecido.",
+      "nextPivot": "R07/R09/R13: domínio, gestão ou transporte distinto.",
+      "validationLevel": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R03",
+      "family": "device_capability_cache",
+      "title": "MobileGestalt MainScreenCanvasSizes",
+      "mechanism": "gestalt",
+      "target": "global",
+      "nodes": [
+        "app",
+        "mg",
+        "global"
+      ],
+      "edges": [
+        "R03E1",
+        "R03E2"
+      ],
+      "risk": "high",
+      "result": "Valor persistente histórico identificado.",
+      "failureCause": "Gravabilidade e consumo são etapas independentes.",
+      "nextPivot": "R20: localizar consumidor real antes de escrever novamente.",
+      "validationLevel": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "priority": 3,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R04",
+      "family": "app_group_extension",
+      "title": "worse_query até o destino gráfico",
+      "mechanism": "worse_query_graphics",
+      "target": "global",
+      "nodes": [
+        "worse",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R04E1",
+        "R04E2"
+      ],
+      "risk": "high",
+      "result": "Suporte a containers documentado; acesso gráfico sem prova nesta build.",
+      "failureCause": "O alvo fica fora das raízes listadas como cobertas. Wrapper não amplia sozinho o alcance.",
+      "nextPivot": "Validar origem do destino por fonte estática e assinatura efetivamente concedida.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 2,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R05",
+      "family": "app_group_extension",
+      "title": "Erosion até o destino gráfico",
+      "mechanism": "worse_query_graphics",
+      "target": "global",
+      "nodes": [
+        "erosion",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R05E1",
+        "R05E2"
+      ],
+      "risk": "high",
+      "result": "Suporte a containers documentado; acesso gráfico sem prova nesta build.",
+      "failureCause": "O alvo fica fora das raízes listadas como cobertas. Wrapper não amplia sozinho o alcance.",
+      "nextPivot": "Validar origem do destino por fonte estática e assinatura efetivamente concedida.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R06",
+      "family": "app_group_extension",
+      "title": "WorstGestalt até o destino gráfico",
+      "mechanism": "worse_query_graphics",
+      "target": "global",
+      "nodes": [
+        "worst",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R06E1",
+        "R06E2"
+      ],
+      "risk": "high",
+      "result": "Suporte a containers documentado; acesso gráfico sem prova nesta build.",
+      "failureCause": "O alvo fica fora das raízes listadas como cobertas. Wrapper não amplia sozinho o alcance.",
+      "nextPivot": "Validar origem do destino por fonte estática e assinatura efetivamente concedida.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R07",
+      "family": "preferences_service",
+      "title": "CFPreferences por escopo",
+      "mechanism": "preferences",
+      "target": "global",
+      "nodes": [
+        "app",
+        "cfprefs",
+        "global"
+      ],
+      "edges": [
+        "R07E1",
+        "R07E2"
+      ],
+      "risk": "low",
+      "result": "A leitura do domínio foi observada historicamente.",
+      "failureCause": "A consulta não identifica sozinha o arquivo backing store nem autorização para configurá-lo.",
+      "nextPivot": "R20/R22: evidência do consumidor ou logs exportados.",
+      "validationLevel": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "priority": 4,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R08",
+      "family": "signature",
+      "title": "App Group e identidade de assinatura",
+      "mechanism": "signing",
+      "target": "global",
+      "nodes": [
+        "app",
+        "worse",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R08E1",
+        "R08E2",
+        "R08E3"
+      ],
+      "risk": "medium",
+      "result": "O requisito de App Group tem suporte em fonte.",
+      "failureCause": "Uma declaração de entitlement não comprova sua concessão.",
+      "nextPivot": "Conferir assinatura instalada em ambiente de desenvolvimento autorizado.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R09",
+      "family": "user_display_control",
+      "title": "Zoom da Tela nativo",
+      "mechanism": "display_zoom",
+      "target": "global",
+      "nodes": [
+        "app",
+        "displayzoom",
+        "global"
+      ],
+      "edges": [
+        "R09E1",
+        "R09E2"
+      ],
+      "risk": "low",
+      "result": "Ajuste nativo documentado; comparação do preset nesta build pendente.",
+      "failureCause": "Presets disponíveis não fornecem dimensão arbitrária como 1125 x 2436.",
+      "nextPivot": "Comparar Antes / preset / restauração usando o 0.1.0 e capturas externas.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 5,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R10",
+      "family": "accessibility",
+      "title": "Zoom de Acessibilidade",
+      "mechanism": "accessibility_zoom",
+      "target": "global",
+      "nodes": [
+        "app",
+        "accesszoom",
+        "global"
+      ],
+      "edges": [
+        "R10E1",
+        "R10E2"
+      ],
+      "risk": "low",
+      "result": "Ampliação documentada.",
+      "failureCause": "A função observada atende à ampliação e não demonstra mudança de canvas.",
+      "nextPivot": "R09: comparar um preset de layout do sistema.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R11",
+      "family": "device_management",
+      "title": "MDM AccessibilitySettings",
+      "mechanism": "managed_accessibility",
+      "target": "global",
+      "nodes": [
+        "mdm",
+        "accesszoom",
+        "global"
+      ],
+      "edges": [
+        "R11E1",
+        "R11E2"
+      ],
+      "risk": "medium",
+      "result": "Campo e requisito de supervisão identificados no esquema.",
+      "failureCause": "Sem payload observado de largura ou altura de canvas.",
+      "nextPivot": "R12: confrontar o esquema declarativo.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R12",
+      "family": "declarative_management",
+      "title": "DDM Accessibility / configuração de serviço",
+      "mechanism": "declarative",
+      "target": "global",
+      "nodes": [
+        "ddm",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R12E1",
+        "R12E2"
+      ],
+      "risk": "medium",
+      "result": "Escopo de sistema e campos do esquema examinados.",
+      "failureCause": "A configuração genérica de arquivos do serviço indica iOS não aplicável.",
+      "nextPivot": "R13/R14: estudar transporte de backup com limites próprios.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R13",
+      "family": "supported_backup",
+      "title": "Backup iCloud e restauração suportada",
+      "mechanism": "supported_backup",
+      "target": "global",
+      "nodes": [
+        "backup",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R13E1",
+        "R13E2"
+      ],
+      "risk": "high",
+      "result": "A restauração de ajustes tem documentação geral.",
+      "failureCause": "Ausência de contrato de edição arbitrária do destino gráfico.",
+      "nextPivot": "R14/R15: examinar as diferenças dos transportes concretos.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R14",
+      "family": "partial_restore",
+      "title": "Nugget original / Cowabunga / FixRDAR",
+      "mechanism": "partial_restore",
+      "target": "global",
+      "nodes": [
+        "sparse",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R14E1",
+        "R14E2"
+      ],
+      "risk": "high",
+      "result": "Mecanismo histórico mapeado e aviso de incompatibilidade lido.",
+      "failureCause": "O transporte original tem incompatibilidade declarada.",
+      "nextPivot": "R15: verificar mudanças reais do fork atual.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R15",
+      "family": "experimental_restore",
+      "title": "GoldenNugget iOS 27 experimental",
+      "mechanism": "protected_restore",
+      "target": "global",
+      "nodes": [
+        "restore27",
+        "graphics",
+        "global"
+      ],
+      "edges": [
+        "R15E1",
+        "R15E2"
+      ],
+      "risk": "high",
+      "result": "Fluxo do fork difere do Nugget original.",
+      "failureCause": "Falta de host e procedimento de recuperação comprovado para o aparelho principal.",
+      "nextPivot": "Estudo em dispositivo descartável da mesma build e revisão do fluxo de falhas.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R16",
+      "family": "automation",
+      "title": "Atalhos de configuração",
+      "mechanism": "shortcuts",
+      "target": "global",
+      "nodes": [
+        "shortcut",
+        "accesszoom",
+        "global"
+      ],
+      "edges": [
+        "R16E1",
+        "R16E2"
+      ],
+      "risk": "low",
+      "result": "Catálogo e semântica de ações examinados por documentação.",
+      "failureCause": "Sem ação primária identificada para dimensões arbitrárias de canvas.",
+      "nextPivot": "Usar ações apenas como observações externas, com unidades identificadas.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R17",
+      "family": "external_display",
+      "title": "AirPlay / tela externa",
+      "mechanism": "external",
+      "target": "global",
+      "nodes": [
+        "app",
+        "external",
+        "global"
+      ],
+      "edges": [
+        "R17E1",
+        "R17E2"
+      ],
+      "risk": "low",
+      "result": "A API tem escopo por tela e cena.",
+      "failureCause": "Destino diferente do display interno do aparelho.",
+      "nextPivot": "R18: verificar o escopo de Mirroring e das cenas.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R18",
+      "family": "mirroring_scene",
+      "title": "iPhone Mirroring e scene resizing",
+      "mechanism": "scene_resize",
+      "target": "global",
+      "nodes": [
+        "app",
+        "scene",
+        "global"
+      ],
+      "edges": [
+        "R18E1",
+        "R18E2"
+      ],
+      "risk": "low",
+      "result": "Há um controle de cena, sujeito ao ambiente.",
+      "failureCause": "A mudança de uma cena não demonstra configuração global.",
+      "nextPivot": "R22: medir fora do processo em uma alteração suportada.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R19",
+      "family": "render_target",
+      "title": "CAMetalLayer / buffer / resolução do app",
+      "mechanism": "layer",
+      "target": "global",
+      "nodes": [
+        "app",
+        "layer",
+        "global"
+      ],
+      "edges": [
+        "R19E1",
+        "R19E2"
+      ],
+      "risk": "low",
+      "result": "A dimensão de render target pode ser local.",
+      "failureCause": "O efeito está no buffer pertencente ao app.",
+      "nextPivot": "Observar capturas de interfaces fora do aplicativo.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R20",
+      "family": "static_consumer",
+      "title": "Identificar o leitor na build exata",
+      "mechanism": "firmware",
+      "target": "global",
+      "nodes": [
+        "firmware",
+        "daemon",
+        "global"
+      ],
+      "edges": [
+        "R20E1",
+        "R20E2"
+      ],
+      "risk": "low",
+      "result": "O consumidor 24A5380h permanece desconhecido.",
+      "failureCause": "Binários e símbolos do sistema da build exata não foram fornecidos ou analisados.",
+      "nextPivot": "Obter artefatos legalmente disponíveis para leitura estática em sessão futura.",
+      "validationLevel": "PLAUSÍVEL MAS NÃO TESTADO",
+      "priority": 5,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R21",
+      "family": "private_display_service",
+      "title": "Interface privada IOMobileFramebuffer",
+      "mechanism": "private_framebuffer",
+      "target": "global",
+      "nodes": [
+        "app",
+        "framebuffer",
+        "global"
+      ],
+      "edges": [
+        "R21E1",
+        "R21E2"
+      ],
+      "risk": "high",
+      "result": "O caminho é uma hipótese apoiada por referências históricas.",
+      "failureCause": "Autorização e ligação exata da função à build seguem sem prova.",
+      "nextPivot": "R20: identificar a interface real no binário antes de chamar.",
+      "validationLevel": "PLAUSÍVEL MAS NÃO TESTADO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R22",
+      "family": "system_observation",
+      "title": "Logs exportados do sistema",
+      "mechanism": "system_logs",
+      "target": "evidence",
+      "nodes": [
+        "app",
+        "logs",
+        "evidence"
+      ],
+      "edges": [
+        "R22E1",
+        "R22E2"
+      ],
+      "risk": "low",
+      "result": "A evidência da rejeição existe apenas no log do app histórico.",
+      "failureCause": "Logs do daemon desta operação não estão disponíveis.",
+      "nextPivot": "Coleta de um trecho pertinente com dados pessoais removidos.",
+      "validationLevel": "PLAUSÍVEL MAS NÃO TESTADO",
+      "priority": 4,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R23",
+      "family": "lifecycle",
+      "title": "Reboot ou reload como gatilho",
+      "mechanism": "lifecycle",
+      "target": "global",
+      "nodes": [
+        "app",
+        "reload",
+        "global"
+      ],
+      "edges": [
+        "R23E1",
+        "R23E2"
+      ],
+      "risk": "medium",
+      "result": "Reboot sozinho manteve a medição UIKit.",
+      "failureCause": "O par 0.1.0 não incluiu alteração de fonte de configuração.",
+      "nextPivot": "Provar a origem e o consumo antes de acoplar outro reload.",
+      "validationLevel": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R24",
+      "family": "simulator",
+      "title": "Simulador e laboratório de interface",
+      "mechanism": "simulator",
+      "target": "global",
+      "nodes": [
+        "simulator",
+        "scene",
+        "global"
+      ],
+      "edges": [
+        "R24E1",
+        "R24E2"
+      ],
+      "risk": "low",
+      "result": "Resultado de laboratório tem escopo de laboratório.",
+      "failureCause": "Falta de equivalência demonstrada com o display físico.",
+      "nextPivot": "R20/R22: correlacionar com evidência da build.",
+      "validationLevel": "CONFIRMADO APENAS EM FONTE/CÓDIGO/OUTRA VERSÃO",
+      "priority": 0,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    },
+    {
+      "id": "R25",
+      "family": "independent_measurement",
+      "title": "PNG fora do app e comparação offline",
+      "mechanism": "measurement",
+      "target": "evidence",
+      "nodes": [
+        "app",
+        "evidence"
+      ],
+      "edges": [
+        "R25E1"
+      ],
+      "risk": "low",
+      "result": "Ferramenta executada no par histórico e em um PNG antigo dos Ajustes.",
+      "failureCause": "O raster da captura não identifica sozinho o buffer interno do compositor.",
+      "nextPivot": "Obter capturas da mesma tela e geometria após um preset suportado.",
+      "validationLevel": "CONFIRMADO NO IPHONE 11 IOS 27.0",
+      "priority": 5,
+      "testPerformed": "Leitura de fonte/documentação e comparação com evidência histórica.",
+      "artifacts": [
+        "CANVAS_GRAPH.json",
+        "EVIDENCE_INDEX.json"
+      ]
+    }
+  ]
+}
