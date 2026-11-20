@@ -1,0 +1,31 @@
+name: Test ResolutionLab phase 3 research
+on:
+  push:
+    branches: [resolutionlab-phase-3]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Compile and test offline tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase3-results
+          python3 --version | tee phase3-results/runtime.txt
+          python3 -m py_compile scripts/phase3_compare.py scripts/phase3_triage.py
+          python3 -B -m unittest discover -s Tests/Phase3Evidence -p 'test_*.py' -v 2>&1 | tee phase3-results/tests.log
+          python3 -B scripts/phase3_triage.py research/CANVAS_GRAPH.json | tee phase3-results/triage.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ResolutionLab-Phase3-tests
+          path: phase3-results/
+          if-no-files-found: error
+          retention-days: 14
